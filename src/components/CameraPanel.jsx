@@ -1,9 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Camera, Video, Grid, Sliders, Crop } from 'lucide-react';
 
+const VIDEO_SOURCES = {
+  neon: 'https://assets.mixkit.co/videos/preview/mixkit-tokyo-street-at-night-with-neon-lights-40082-large.mp4',
+  beach: 'https://assets.mixkit.co/videos/preview/mixkit-sunset-on-a-sandy-beach-with-gentle-waves-41968-large.mp4',
+  kitchen: 'https://assets.mixkit.co/videos/preview/mixkit-chef-preparing-vegetables-close-up-41962-large.mp4'
+};
+
 export default function CameraPanel({ activeShot, onCaptureFrame }) {
+  const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const overlayCanvasRef = useRef(null);
   
   const [hudGrid, setHudGrid] = useState(true);
   const [focalLength, setFocalLength] = useState('50mm'); // 24mm, 50mm, 85mm
@@ -37,206 +43,29 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
     return `00:${mins}:${secs}`;
   };
 
-  // Interactive HUD background simulator using standard canvas 
-  useEffect(() => {
-    const canvas = overlayCanvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animationId;
-    let frame = 0;
-
-    // Simulated camera noise & shapes
-    const drawSimulation = () => {
-      frame++;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw simulated HUD backgrounds based on preset
-      if (povPreset === 'neon') {
-        // Dark background
-        ctx.fillStyle = '#060814';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Cyber grids/perspective lines
-        ctx.strokeStyle = 'rgba(14, 165, 233, 0.15)';
-        ctx.lineWidth = 1;
-        const horizon = canvas.height * 0.55;
-        
-        // Horizontal lines
-        for (let i = 0; i < 5; i++) {
-          const y = horizon + Math.pow(i, 2.2) * 5;
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(canvas.width, y);
-          ctx.stroke();
-        }
-
-        // Perspective vanishing point lines
-        const vpX = canvas.width / 2;
-        const vpY = horizon;
-        for (let i = -6; i <= 6; i++) {
-          ctx.beginPath();
-          ctx.moveTo(vpX, vpY);
-          ctx.lineTo(vpX + i * 120, canvas.height);
-          ctx.stroke();
-        }
-
-        // Rising cyber neon cubes
-        ctx.fillStyle = 'rgba(236, 72, 153, 0.4)'; // Pink/neon magenta
-        ctx.strokeStyle = '#ec4899';
-        ctx.lineWidth = 2;
-        const cubes = [
-          { x: 100, y: 320, size: 40 + Math.sin(frame * 0.02) * 5 },
-          { x: 420, y: 280, size: 30 + Math.cos(frame * 0.03) * 5 },
-          { x: 260, y: 350, size: 60 + Math.sin(frame * 0.01) * 8 }
-        ];
-
-        cubes.forEach(c => {
-          ctx.save();
-          ctx.translate(c.x, c.y);
-          ctx.rotate(frame * 0.005);
-          ctx.strokeRect(-c.size/2, -c.size/2, c.size, c.size);
-          ctx.fillStyle = 'rgba(236, 72, 153, 0.06)';
-          ctx.fillRect(-c.size/2, -c.size/2, c.size, c.size);
-          ctx.restore();
-        });
-
-        // Floating particle dots
-        ctx.fillStyle = '#0ea5e9';
-        for (let i = 0; i < 15; i++) {
-          const px = (Math.sin(frame * 0.002 + i) * 0.5 + 0.5) * canvas.width;
-          const py = ((frame * 0.2 + i * 40) % canvas.height);
-          ctx.beginPath();
-          ctx.arc(px, py, 1.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = '#0ea5e9';
-        ctx.font = '9px monospace';
-        ctx.fillText('POV SIMULATOR: NEON CHASE', 20, 30);
-
-      } else if (povPreset === 'beach') {
-        // Sunset orange theme
-        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        grad.addColorStop(0, '#f97316'); // Orange
-        grad.addColorStop(0.5, '#ea580c'); // Deep orange
-        grad.addColorStop(1, '#1e293b'); // Ocean dark slate
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Sun disc
-        ctx.fillStyle = '#fef08a'; // yellow
-        ctx.shadowColor = '#fbbf24';
-        ctx.shadowBlur = 40;
-        ctx.beginPath();
-        ctx.arc(canvas.width/2, canvas.height/2 + 20, 60, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0; // reset shadow
-
-        // Ocean waves reflection
-        ctx.fillStyle = 'rgba(254, 240, 138, 0.2)';
-        for (let i = 0; i < 4; i++) {
-          const w = 150 - i * 20;
-          ctx.fillRect(canvas.width/2 - w/2, canvas.height/2 + 40 + i * 25 + Math.sin(frame * 0.05 + i) * 5, w, 2);
-        }
-
-        // Rising ambient embers
-        ctx.fillStyle = 'rgba(251, 191, 36, 0.6)';
-        for (let i = 0; i < 10; i++) {
-          const px = (Math.cos(frame * 0.005 + i) * 0.4 + 0.5) * canvas.width;
-          const py = canvas.height - ((frame * 0.3 + i * 50) % canvas.height);
-          ctx.beginPath();
-          ctx.arc(px, py, 2, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillStyle = '#fef08a';
-        ctx.font = '9px monospace';
-        ctx.fillText('POV SIMULATOR: SUNSET BEACH', 20, 30);
-
-      } else if (povPreset === 'kitchen') {
-        // Warm green/beige theme
-        ctx.fillStyle = '#1c1917'; // dark stone
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Grid backsplash
-        ctx.strokeStyle = '#292524';
-        ctx.lineWidth = 1;
-        for (let x = 0; x < canvas.width; x += 40) {
-          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-        }
-        for (let y = 0; y < canvas.height; y += 40) {
-          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-        }
-
-        // Steaming pots and vegetables
-        ctx.strokeStyle = '#84cc16'; // Lime green
-        ctx.lineWidth = 2;
-        ctx.strokeRect(180, 160, 280, 160); // cutting board
-        
-        ctx.fillStyle = '#ef4444'; // Red tomato circular blocks
-        ctx.beginPath(); ctx.arc(280, 220, 15, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(310, 240, 12, 0, Math.PI * 2); ctx.fill();
-
-        // Rising steam vectors
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.lineWidth = 3;
-        for (let i = 0; i < 3; i++) {
-          const sx = 220 + i * 90 + Math.sin(frame * 0.04 + i) * 6;
-          const sy = 120 + Math.sin(frame * 0.05 + i) * 10;
-          ctx.beginPath();
-          ctx.moveTo(sx, sy);
-          ctx.lineTo(sx - 5, sy - 30);
-          ctx.stroke();
-        }
-
-        ctx.fillStyle = '#84cc16';
-        ctx.font = '9px monospace';
-        ctx.fillText('POV SIMULATOR: CHEF KITCHEN', 20, 30);
-      }
-
-      // Focal indicator text
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`LENS: ${focalLength}`, canvas.width - 20, 30);
-      ctx.textAlign = 'left';
-
-      // Digital scanlines
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-      for (let y = (frame % 8); y < canvas.height; y += 8) {
-        ctx.fillRect(0, y, canvas.width, 2);
-      }
-
-      animationId = requestAnimationFrame(drawSimulation);
-    };
-
-    drawSimulation();
-
-    return () => cancelAnimationFrame(animationId);
-  }, [povPreset, focalLength]);
-
-  // Capture current frame
+  // Capture current frame from HTML5 video element
   const captureShot = () => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const video = videoRef.current;
+    if (!canvas || !video) return;
+    
     const ctx = canvas.getContext('2d');
     
     // Set matching dimensions
     canvas.width = 640;
     canvas.height = 480;
 
-    if (overlayCanvasRef.current) {
-      ctx.drawImage(overlayCanvasRef.current, 0, 0, canvas.width, canvas.height);
-      
-      // Draw crop masks on snapshot image
-      ctx.fillStyle = 'black';
-      if (aspectRatio === '2.39:1') {
-        ctx.fillRect(0, 0, canvas.width, canvas.height * 0.18);
-        ctx.fillRect(0, canvas.height * 0.82, canvas.width, canvas.height * 0.18);
-      } else if (aspectRatio === '9:16') {
-        ctx.fillRect(0, 0, canvas.width * 0.31, canvas.height);
-        ctx.fillRect(canvas.width * 0.69, 0, canvas.width * 0.31, canvas.height);
-      }
+    // Draw the current video frame onto canvas
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // Draw crop masks on snapshot image
+    ctx.fillStyle = 'black';
+    if (aspectRatio === '2.39:1') {
+      ctx.fillRect(0, 0, canvas.width, canvas.height * 0.18);
+      ctx.fillRect(0, canvas.height * 0.82, canvas.width, canvas.height * 0.18);
+    } else if (aspectRatio === '9:16') {
+      ctx.fillRect(0, 0, canvas.width * 0.31, canvas.height);
+      ctx.fillRect(canvas.width * 0.69, 0, canvas.width * 0.31, canvas.height);
     }
 
     const dataUrl = canvas.toDataURL('image/jpeg');
@@ -274,16 +103,21 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
         {/* Hidden capture canvas */}
         <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-        {/* Canvas feed */}
-        <canvas 
-          ref={overlayCanvasRef} 
-          width={640} 
-          height={480}
+        {/* Realistic Looping Video Loop */}
+        <video 
+          ref={videoRef}
+          src={VIDEO_SOURCES[povPreset]}
           className="webcam-feed"
+          autoPlay
+          loop
+          muted
+          playsInline
+          key={povPreset} // Force reload on preset change
           style={{ 
             display: 'block',
             transform: `scale(${zoomScale[focalLength]})`,
-            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+            transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            objectFit: 'cover'
           }}
         />
 
