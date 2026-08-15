@@ -122,7 +122,7 @@ export default function DictationConsole({ onProcessDictation, isProcessing }) {
             placeholder="Type your storyboard concepts or click 'Start Ambient Mic' to dictate scenes verbally. E.g. 'EXT. NEON STREET. Close up of character running...'"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            rows={5}
+            rows={6}
             disabled={isProcessing}
           />
           
