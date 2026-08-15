@@ -12,7 +12,8 @@ const PRESETS = {
         action: "An extreme wide shot of cyberpunk neon alleyways with heavy rain.",
         dialogue: "",
         audio: "Distant hum of flying vehicles, heavy synth bass and rainfall.",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/thumb-cyberpunk.jpg"
       },
       {
         id: "card-2",
@@ -21,7 +22,8 @@ const PRESETS = {
         action: "A security drone zooms close up on the corner.",
         dialogue: "",
         audio: "High-pitched digital scan sounds, drone motor hum.",
-        composition: "center-focus"
+        composition: "center-focus",
+        capturedImage: "/thumb-cyberpunk.jpg"
       },
       {
         id: "card-3",
@@ -30,7 +32,8 @@ const PRESETS = {
         action: "A tracking shot of the rogue runner darting through the wet puddles.",
         dialogue: "Runner: 'They've located the signal. I'm running out of grid sectors!'",
         audio: "Puddles splashing, high-paced electronic percussion kicks in.",
-        composition: "diagonal-motion"
+        composition: "diagonal-motion",
+        capturedImage: "/thumb-cyberpunk.jpg"
       },
       {
         id: "card-4",
@@ -39,7 +42,8 @@ const PRESETS = {
         action: "A shadowy alcove where the runner hides as the search light sweeps by.",
         dialogue: "",
         audio: "Music drops to a tense, low drone. The search light sweeps by.",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/thumb-cyberpunk.jpg"
       }
     ],
     critique: {
@@ -58,7 +62,8 @@ const PRESETS = {
         action: "Establishing wide shot of a sandy beach at sunset, warm orange hues, soft piano music.",
         dialogue: "",
         audio: "Soothing sound of ocean waves, a melancholic piano theme playing softly.",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/thumb-beach.jpg"
       },
       {
         id: "card-2",
@@ -67,7 +72,8 @@ const PRESETS = {
         action: "Sarah looks down, struggling to find the words.",
         dialogue: "Sarah: 'We spent five years building this system. You can't just walk away now.'",
         audio: "Wind blowing gently, ocean swell.",
-        composition: "center-focus"
+        composition: "center-focus",
+        capturedImage: "/thumb-beach.jpg"
       },
       {
         id: "card-3",
@@ -76,7 +82,8 @@ const PRESETS = {
         action: "Close up of Mark closing his eyes.",
         dialogue: "Mark: 'It was never about the system, Sarah. It was about who we became while building it.'",
         audio: "Piano music grows slightly louder, introducing a cello note.",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/thumb-beach.jpg"
       },
       {
         id: "card-4",
@@ -85,7 +92,8 @@ const PRESETS = {
         action: "Reverse close up of Sarah reaching her hand out in silence.",
         dialogue: "",
         audio: "Waves crashing loudly, covering the silence.",
-        composition: "diagonal-motion"
+        composition: "diagonal-motion",
+        capturedImage: "/thumb-beach.jpg"
       }
     ],
     critique: {
@@ -104,7 +112,8 @@ const PRESETS = {
         action: "Extreme close up of a chef's knife swiftly chopping fresh green basil on a cutting board, rhythmic chop sound.",
         dialogue: "",
         audio: "Rapid rhythmic chopping sounds on wood, light acoustic guitar background.",
-        composition: "center-focus"
+        composition: "center-focus",
+        capturedImage: "/thumb-cooking.jpg"
       },
       {
         id: "card-2",
@@ -113,7 +122,8 @@ const PRESETS = {
         action: "Close up of red cherry tomatoes tossed into a hot pan with steam rising.",
         dialogue: "",
         audio: "Loud sizzling and popping of oil, guitar music continues.",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/thumb-cooking.jpg"
       },
       {
         id: "card-3",
@@ -122,7 +132,8 @@ const PRESETS = {
         action: "Chef turns to camera.",
         dialogue: "Chef: 'High heat is key here. We want to blister the skin, trapping all that sweet moisture inside.'",
         audio: "Sizzle continues, music swelling.",
-        composition: "center-focus"
+        composition: "center-focus",
+        capturedImage: "/thumb-cooking.jpg"
       },
       {
         id: "card-4",
@@ -131,7 +142,8 @@ const PRESETS = {
         action: "Medium shot of pan flipping.",
         dialogue: "",
         audio: "Pan clanking, sizzle drops briefly, then resumes.",
-        composition: "diagonal-motion"
+        composition: "diagonal-motion",
+        capturedImage: "/thumb-cooking.jpg"
       }
     ],
     critique: {
@@ -176,7 +188,8 @@ export function parseDictation(text) {
         action: text,
         dialogue: "",
         audio: "Ambient audio",
-        composition: "rule-of-thirds"
+        composition: "rule-of-thirds",
+        capturedImage: "/neon.mp4" // Use video loop as placeholder
       }
     ];
     return {
@@ -265,7 +278,8 @@ export function parseDictation(text) {
       action: action.charAt(0).toUpperCase() + action.slice(1),
       dialogue,
       audio,
-      composition
+      composition,
+      capturedImage: "/thumb-cyberpunk.jpg" // Fallback to a nice cinematic thumbnail
     };
   });
 
