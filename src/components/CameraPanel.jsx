@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Camera, Video, Grid, Sliders, Crop } from 'lucide-react';
 
 const VIDEO_SOURCES = {
-  neon: 'https://assets.mixkit.co/videos/preview/mixkit-tokyo-street-at-night-with-neon-lights-40082-large.mp4',
-  beach: 'https://assets.mixkit.co/videos/preview/mixkit-sunset-on-a-sandy-beach-with-gentle-waves-41968-large.mp4',
-  kitchen: 'https://assets.mixkit.co/videos/preview/mixkit-chef-preparing-vegetables-close-up-41962-large.mp4'
+  neon: '/neon.mp4',
+  beach: '/beach.mp4',
+  kitchen: '/kitchen.mp4'
 };
 
 export default function CameraPanel({ activeShot, onCaptureFrame }) {
