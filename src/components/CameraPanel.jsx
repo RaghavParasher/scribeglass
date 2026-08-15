@@ -197,19 +197,19 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
               className={`btn-sm btn-hud ${povPreset === 'neon' ? 'active' : ''}`}
               onClick={() => setPovPreset('neon')}
             >
-              Neon Alley
+              Cartoon Bunny
             </button>
             <button 
               className={`btn-sm btn-hud ${povPreset === 'beach' ? 'active' : ''}`}
               onClick={() => setPovPreset('beach')}
             >
-              Beach
+              Playful Cat
             </button>
             <button 
               className={`btn-sm btn-hud ${povPreset === 'kitchen' ? 'active' : ''}`}
               onClick={() => setPovPreset('kitchen')}
             >
-              Kitchen
+              Corgi Dog
             </button>
           </div>
         </div>
