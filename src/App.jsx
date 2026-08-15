@@ -8,11 +8,12 @@ import { Eye, Film, FileCode } from 'lucide-react';
 
 export default function App() {
   // Pre-load with the cyberpunk script template
-  const [cards, setCards] = useState(() => parseDictation('cyberpunk'));
+  const [cards, setCards] = useState(() => parseDictation('cyberpunk').cards);
   const [activeCardId, setActiveCardId] = useState(() => {
-    const initial = parseDictation('cyberpunk');
+    const initial = parseDictation('cyberpunk').cards;
     return initial.length > 0 ? initial[0].id : null;
   });
+  const [critique, setCritique] = useState(() => parseDictation('cyberpunk').critique);
   
   const [activeTab, setActiveTab] = useState('storyboard'); // 'storyboard' | 'script'
   const [isProcessing, setIsProcessing] = useState(false);
@@ -28,10 +29,11 @@ export default function App() {
     
     // Simulate high-fidelity AI parsing latency
     setTimeout(() => {
-      const newShots = parseDictation(text);
-      if (newShots.length > 0) {
-        setCards(newShots);
-        setActiveCardId(newShots[0].id);
+      const result = parseDictation(text);
+      if (result.cards.length > 0) {
+        setCards(result.cards);
+        setActiveCardId(result.cards[0].id);
+        setCritique(result.critique);
       }
       setIsProcessing(false);
     }, 1200);
@@ -113,6 +115,7 @@ export default function App() {
           <DictationConsole 
             onProcessDictation={handleProcessDictation}
             isProcessing={isProcessing}
+            critique={critique}
           />
         </div>
 

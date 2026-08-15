@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Mic, MicOff, Play, Sparkles, Wand2, FileText } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, Wand2, FileText, Activity, Terminal, AlertTriangle } from 'lucide-react';
 
 const DRAFTS = [
   {
@@ -16,60 +16,8 @@ const DRAFTS = [
   }
 ];
 
-export default function DictationConsole({ onProcessDictation, isProcessing }) {
+export default function DictationConsole({ onProcessDictation, isProcessing, critique }) {
   const [inputText, setInputText] = useState("");
-  const [isListening, setIsListening] = useState(false);
-  const [recognitionInstance, setRecognitionInstance] = useState(null);
-  const [micError, setMicError] = useState(false);
-
-  // Initialize Speech Recognition
-  useEffect(() => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const rec = new SpeechRecognition();
-      rec.continuous = true;
-      rec.interimResults = false;
-      rec.lang = 'en-US';
-
-      rec.onresult = (event) => {
-        const transcript = event.results[event.results.length - 1][0].transcript;
-        setInputText(prev => prev ? `${prev} ${transcript}` : transcript);
-      };
-
-      rec.onerror = (err) => {
-        console.error("Speech Recognition Error:", err);
-        setMicError(true);
-        setIsListening(false);
-      };
-
-      rec.onend = () => {
-        setIsListening(false);
-      };
-
-      setRecognitionInstance(rec);
-    }
-  }, []);
-
-  const toggleListening = () => {
-    if (!recognitionInstance) {
-      alert("Web Speech API is not supported in this browser. Please try Chrome, Edge, or Safari.");
-      return;
-    }
-
-    if (isListening) {
-      recognitionInstance.stop();
-      setIsListening(false);
-    } else {
-      setMicError(false);
-      try {
-        recognitionInstance.start();
-        setIsListening(true);
-      } catch (err) {
-        console.error("Failed to start speech recognition:", err);
-        setIsListening(false);
-      }
-    }
-  };
 
   const handleApplyDraft = (text) => {
     setInputText(text);
@@ -86,14 +34,9 @@ export default function DictationConsole({ onProcessDictation, isProcessing }) {
       {/* Header */}
       <div className="panel-header flex-row items-center justify-between border-b border-slate-800/60 pb-3 mb-3">
         <div className="flex-row items-center gap-2">
-          <Sparkles className="text-amber-400" size={16} />
+          <Sparkles className="text-amber-400 animate-pulse" size={16} />
           <span className="panel-title font-semibold tracking-wider">CREATOR DICTATION DIALOG</span>
         </div>
-        {recognitionInstance && (
-          <span className="text-[10px] text-emerald-400/80 bg-emerald-500/10 px-2 py-0.5 rounded font-mono">
-            VOICE CAPABLE
-          </span>
-        )}
       </div>
 
       {/* Preset Draft Cards */}
@@ -106,6 +49,7 @@ export default function DictationConsole({ onProcessDictation, isProcessing }) {
               type="button"
               className="btn-sm btn-draft flex-row items-center gap-1.5"
               onClick={() => handleApplyDraft(draft.text)}
+              disabled={isProcessing}
             >
               <FileText size={12} className="text-slate-400" />
               {draft.label}
@@ -116,47 +60,17 @@ export default function DictationConsole({ onProcessDictation, isProcessing }) {
 
       {/* Main text input form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="relative">
-          <textarea
-            className="dictation-textarea text-sm"
-            placeholder="Type your storyboard concepts or click 'Start Ambient Mic' to dictate scenes verbally. E.g. 'EXT. NEON STREET. Close up of character running...'"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            rows={6}
-            disabled={isProcessing}
-          />
-          
-          {/* Micro indicator overlay */}
-          {isListening && (
-            <div className="absolute top-2 right-2 flex-row items-center gap-1.5 bg-rose-500/25 border border-rose-500/40 px-2 py-0.5 rounded text-[10px] font-mono text-rose-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-              LISTENING...
-            </div>
-          )}
-        </div>
+        <textarea
+          className="dictation-textarea text-sm"
+          placeholder="Type your storyboard concepts or click a preset draft above. E.g. 'EXT. NEON STREET. Close up of character running...'"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          rows={6}
+          disabled={isProcessing}
+        />
 
         {/* Buttons Action bar */}
-        <div className="flex justify-between items-center gap-3">
-          <button
-            type="button"
-            className={`btn-secondary py-2 px-3 flex-row items-center gap-2 ${isListening ? 'listening-active' : ''}`}
-            onClick={toggleListening}
-            disabled={isProcessing}
-            title={recognitionInstance ? "Start/Stop audio dictation" : "Voice dictation not supported on this browser"}
-          >
-            {isListening ? (
-              <>
-                <MicOff size={16} className="text-rose-400" />
-                <span>STOP MIC</span>
-              </>
-            ) : (
-              <>
-                <Mic size={16} className="text-cyan-400" />
-                <span>AMBIENT MIC</span>
-              </>
-            )}
-          </button>
-
+        <div className="flex justify-end items-center gap-3">
           <button
             type="submit"
             className="btn-accent flex-1 py-2 font-semibold flex-row justify-center items-center gap-2"
@@ -176,6 +90,64 @@ export default function DictationConsole({ onProcessDictation, isProcessing }) {
           </button>
         </div>
       </form>
+
+      {/* Option 1: AI Director's Critique & Pacing Analyst Panel */}
+      {critique && (
+        <div className="critique-panel mt-4 p-3 border border-cyan-400/20 bg-cyan-950/10 rounded-lg relative overflow-hidden">
+          {/* Subtle neon side accent */}
+          <div className="absolute top-0 left-0 h-full w-1 bg-cyan-400" />
+
+          {/* Title row */}
+          <div className="flex-row justify-between items-center mb-2.5">
+            <div className="flex-row items-center gap-1.5 text-cyan-400 text-xs font-semibold tracking-wider font-mono">
+              <Terminal size={12} />
+              <span>AI DIRECTORS NOTES</span>
+            </div>
+            
+            <div className="flex-row items-center gap-1">
+              <span className="text-[10px] text-cyan-400/90 font-semibold font-mono bg-cyan-400/10 px-2 py-0.5 rounded border border-cyan-400/25">
+                {critique.pacingLabel.toUpperCase()}
+              </span>
+            </div>
+          </div>
+
+          {/* Metric Bar Row */}
+          <div className="flex-col gap-1 mb-2.5">
+            <div className="flex-row justify-between text-[10px] font-mono text-slate-400">
+              <span>PACING VELOCITY INDEX</span>
+              <span className="text-cyan-400 font-bold">{critique.pacingIndex}%</span>
+            </div>
+            {/* Horizontal gauge meter */}
+            <div className="w-full h-1.5 bg-slate-950 rounded overflow-hidden">
+              <div 
+                className="h-full bg-cyan-400 shadow-[0_0_8px_#0ea5e9]"
+                style={{ 
+                  width: `${critique.pacingIndex}%`,
+                  transition: 'width 0.8s cubic-bezier(0.16, 1, 0.3, 1)' 
+                }} 
+              />
+            </div>
+          </div>
+
+          {/* Critique analysis content */}
+          <p className="text-[11px] text-slate-300 leading-relaxed font-sans mb-2">
+            {critique.analysis}
+          </p>
+
+          {/* Recommendations block */}
+          {critique.recommendations && (
+            <div className="border-t border-slate-800/60 pt-2 flex-col gap-1">
+              <div className="flex-row items-center gap-1 text-[9px] font-bold text-amber-500/80 font-mono tracking-wider">
+                <AlertTriangle size={10} />
+                <span>SUGGESTED REVISION</span>
+              </div>
+              <p className="text-[10px] text-slate-400 italic leading-snug pl-1">
+                "{critique.recommendations}"
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
