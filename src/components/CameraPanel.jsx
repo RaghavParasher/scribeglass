@@ -290,25 +290,25 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
         {/* Grid lines overlay */}
         {hudGrid && (
           <div className="hud-grid-overlay absolute inset-0 pointer-events-none">
-            <div className="grid-h-1 absolute w-full left-0 border-t border-dashed border-sky-400/20" style={{ top: '33.33%' }} />
-            <div className="grid-h-2 absolute w-full left-0 border-t border-dashed border-sky-400/20" style={{ top: '66.66%' }} />
-            <div className="grid-v-1 absolute h-full top-0 border-l border-dashed border-sky-400/20" style={{ left: '33.33%' }} />
-            <div className="grid-v-2 absolute h-full top-0 border-l border-dashed border-sky-400/20" style={{ left: '66.66%' }} />
+            <div className="grid-h-1 absolute w-full left-0 border-t border-dashed" style={{ top: '33.33%', borderColor: 'rgba(14, 165, 233, 0.2)' }} />
+            <div className="grid-h-2 absolute w-full left-0 border-t border-dashed" style={{ top: '66.66%', borderColor: 'rgba(14, 165, 233, 0.2)' }} />
+            <div className="grid-v-1 absolute h-full top-0 border-l border-dashed" style={{ left: '33.33%', borderColor: 'rgba(14, 165, 233, 0.2)' }} />
+            <div className="grid-v-2 absolute h-full top-0 border-l border-dashed" style={{ left: '66.66%', borderColor: 'rgba(14, 165, 233, 0.2)' }} />
           </div>
         )}
 
         {/* Cinematic Aspect Ratio Mask Overlays */}
         {aspectRatio === '2.39:1' && (
           <div className="absolute inset-0 pointer-events-none flex flex-col justify-between">
-            <div className="w-full bg-slate-950/85 border-b border-slate-900" style={{ height: '18%' }} />
-            <div className="w-full bg-slate-950/85 border-t border-slate-900" style={{ height: '18%' }} />
+            <div className="w-full" style={{ height: '18%', backgroundColor: 'rgba(2, 6, 23, 0.9)', borderBottom: '1px solid rgba(14, 165, 233, 0.15)' }} />
+            <div className="w-full" style={{ height: '18%', backgroundColor: 'rgba(2, 6, 23, 0.9)', borderTop: '1px solid rgba(14, 165, 233, 0.15)' }} />
           </div>
         )}
 
         {aspectRatio === '9:16' && (
           <div className="absolute inset-0 pointer-events-none flex justify-between">
-            <div className="h-full bg-slate-950/85 border-r border-slate-900" style={{ width: '31%' }} />
-            <div className="h-full bg-slate-950/85 border-l border-slate-900" style={{ width: '31%' }} />
+            <div className="h-full" style={{ width: '31%', backgroundColor: 'rgba(2, 6, 23, 0.9)', borderRight: '1px solid rgba(14, 165, 233, 0.15)' }} />
+            <div className="h-full" style={{ width: '31%', backgroundColor: 'rgba(2, 6, 23, 0.9)', borderLeft: '1px solid rgba(14, 165, 233, 0.15)' }} />
           </div>
         )}
 
@@ -328,13 +328,14 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
 
         {/* Dynamic focus box helper */}
         {activeShot && (
-          <div className="absolute border border-dashed border-emerald-400/50 pointer-events-none active-shot-focus animate-pulse"
+          <div className="absolute border border-dashed pointer-events-none active-shot-focus animate-pulse"
             style={{
               width: '120px',
               height: '80px',
               top: activeShot.composition === 'rule-of-thirds' ? '25%' : activeShot.composition === 'diagonal-motion' ? '45%' : '38%',
               left: activeShot.composition === 'rule-of-thirds' ? '20%' : activeShot.composition === 'diagonal-motion' ? '55%' : '38%',
-              transition: 'all 0.5s ease-in-out'
+              transition: 'all 0.5s ease-in-out',
+              borderColor: 'rgba(16, 185, 129, 0.5)'
             }}
           >
             <span className="absolute top-1 left-1 text-[8px] text-emerald-400/70 font-mono">

@@ -99,12 +99,7 @@ export default function App() {
             Spatial Storyboarding & Ambient Scriptwriting Suite
           </p>
         </div>
-        
-        <div className="flex-row items-center gap-2">
-          <span className="text-xs text-slate-500 font-mono">
-            Aug 15, 2026 | Deadline Focus
-          </span>
-        </div>
+        {/* Removed deadline text block */}
       </header>
 
       {/* Main Grid Section */}
