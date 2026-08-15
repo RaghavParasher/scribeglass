@@ -8,36 +8,36 @@ const PRESETS = {
       id: "card-1",
       shotType: "EXTREME WIDE SHOT",
       location: "EXT. NEON ALLEYWAY - NIGHT (RAIN)",
-      action: "Massive skyscrapers loom overhead, covered in blinking holographic advertisements. Rain slicked streets reflect neon signs.",
+      action: "An extreme wide shot of cyberpunk neon alleyways with heavy rain.",
       dialogue: "",
       audio: "Distant hum of flying vehicles, heavy synth bass and rainfall.",
       composition: "rule-of-thirds"
     },
     {
       id: "card-2",
-      shotType: "TRACKING SHOT",
-      location: "EXT. NEON ALLEYWAY - NIGHT (RAIN)",
-      action: "A rogue runner in a reflective cybernetic jacket darts through the wet puddles, glancing frantically behind.",
-      dialogue: "Runner: (panting) 'They've located the signal. I'm running out of grid sectors!'",
-      audio: "Puddles splashing, high-paced electronic percussion kicks in.",
-      composition: "diagonal-motion"
-    },
-    {
-      id: "card-3",
       shotType: "CLOSE-UP SHOT",
       location: "EXT. NEON ALLEYWAY - NIGHT (RAIN)",
-      action: "A chrome-plated security drone rounds the corner, its lens glowing a hostile neon red as it sweeps the alley.",
+      action: "A security drone zooms close up on the corner.",
       dialogue: "",
       audio: "High-pitched digital scan sounds, drone motor hum.",
       composition: "center-focus"
     },
     {
+      id: "card-3",
+      shotType: "TRACKING SHOT",
+      location: "EXT. NEON ALLEYWAY - NIGHT (RAIN)",
+      action: "A tracking shot of the rogue runner darting through the wet puddles.",
+      dialogue: "Runner: 'They've located the signal. I'm running out of grid sectors!'",
+      audio: "Puddles splashing, high-paced electronic percussion kicks in.",
+      composition: "diagonal-motion"
+    },
+    {
       id: "card-4",
       shotType: "MEDIUM CLOSE SHOT",
       location: "EXT. SHADOWY ALCOVE - NIGHT (RAIN)",
-      action: "The runner presses back against a rusted metal pipe structure, holding their breath as the red light sweeps inches away.",
+      action: "A shadowy alcove where the runner hides as the search light sweeps by.",
       dialogue: "",
-      audio: "Music drops to a tense, low drone. The runner's rapid heartbeat is audible.",
+      audio: "Music drops to a tense, low drone. The search light sweeps by.",
       composition: "rule-of-thirds"
     }
   ],
@@ -46,7 +46,7 @@ const PRESETS = {
       id: "card-1",
       shotType: "WIDE SHOT",
       location: "EXT. SANDY BEACH - SUNSET",
-      action: "Golden sun dipping below the ocean horizon. Gentle waves wash over the shoreline. Two figures stand fifty feet apart.",
+      action: "Establishing wide shot of a sandy beach at sunset, warm orange hues, soft piano music.",
       dialogue: "",
       audio: "Soothing sound of ocean waves, a melancholic piano theme playing softly.",
       composition: "rule-of-thirds"
@@ -55,7 +55,7 @@ const PRESETS = {
       id: "card-2",
       shotType: "MEDIUM SHOT",
       location: "EXT. SANDY BEACH - SUNSET",
-      action: "SARAH looks down, digging her bare toes into the wet sand, struggling to find the words.",
+      action: "Sarah looks down, struggling to find the words.",
       dialogue: "Sarah: 'We spent five years building this system. You can't just walk away now.'",
       audio: "Wind blowing gently, ocean swell.",
       composition: "center-focus"
@@ -64,7 +64,7 @@ const PRESETS = {
       id: "card-3",
       shotType: "CLOSE-UP SHOT",
       location: "EXT. SANDY BEACH - SUNSET",
-      action: "MARK closes his eyes, sighing. A single tear rolls down his cheek, catching the golden sunset light.",
+      action: "Close up of Mark closing his eyes.",
       dialogue: "Mark: 'It was never about the system, Sarah. It was about who we became while building it.'",
       audio: "Piano music grows slightly louder, introducing a cello note.",
       composition: "rule-of-thirds"
@@ -73,7 +73,7 @@ const PRESETS = {
       id: "card-4",
       shotType: "REVERSE CLOSE-UP",
       location: "EXT. SANDY BEACH - SUNSET",
-      action: "Sarah looks up, surprised. She reaches out a hand, but hesitates, leaving it hovering in the air.",
+      action: "Reverse close up of Sarah reaching her hand out in silence.",
       dialogue: "",
       audio: "Waves crashing loudly, covering the silence.",
       composition: "diagonal-motion"
@@ -83,8 +83,8 @@ const PRESETS = {
     {
       id: "card-1",
       shotType: "EXTREME CLOSE-UP",
-      location: "INT. MODERN KITCHEN - DAY",
-      action: "A chef's knife swiftly chops fresh basil leaves on a dark wooden cutting board. Green juices stain the wood.",
+      location: "INT. KITCHEN - DAY",
+      action: "Extreme close up of a chef's knife swiftly chopping fresh green basil on a cutting board, rhythmic chop sound.",
       dialogue: "",
       audio: "Rapid rhythmic chopping sounds on wood, light acoustic guitar background.",
       composition: "center-focus"
@@ -92,17 +92,26 @@ const PRESETS = {
     {
       id: "card-2",
       shotType: "CLOSE-UP SHOT",
-      location: "INT. MODERN KITCHEN - DAY",
-      action: "Fresh red cherry tomatoes are tossed into a hot pan with olive oil. Plumes of white steam rise immediately.",
-      dialogue: "Chef: 'High heat is key here. We want to blister the skin, trapping all that sweet moisture inside.'",
+      location: "INT. KITCHEN - DAY",
+      action: "Close up of red cherry tomatoes tossed into a hot pan with steam rising.",
+      dialogue: "",
       audio: "Loud sizzling and popping of oil, guitar music continues.",
       composition: "rule-of-thirds"
     },
     {
       id: "card-3",
       shotType: "MEDIUM SHOT",
-      location: "INT. MODERN KITCHEN - DAY",
-      action: "The chef grabs the pan and tosses the tomatoes high in the air, catching them cleanly. A bright smile on his face.",
+      location: "INT. KITCHEN - DAY",
+      action: "Chef turns to camera.",
+      dialogue: "Chef: 'High heat is key here. We want to blister the skin, trapping all that sweet moisture inside.'",
+      audio: "Sizzle continues, music swelling.",
+      composition: "center-focus"
+    },
+    {
+      id: "card-4",
+      shotType: "MEDIUM SHOT",
+      location: "INT. KITCHEN - DAY",
+      action: "Medium shot of pan flipping.",
       dialogue: "",
       audio: "Pan clanking, sizzle drops briefly, then resumes.",
       composition: "diagonal-motion"
@@ -132,7 +141,6 @@ export function parseDictation(text) {
   }
 
   // Fallback: Parse custom text by sentences
-  // Split by periods or semicolons, filtering empty strings
   const sentences = text.split(/[.;]+/).map(s => s.trim()).filter(s => s.length > 5);
   
   if (sentences.length === 0) {
@@ -192,7 +200,6 @@ export function parseDictation(text) {
     const quoteMatches = sentence.match(/"([^"]+)"|'([^']+)'/);
     if (quoteMatches) {
       const spokeText = quoteMatches[1] || quoteMatches[2];
-      // Try to find a character name
       const nameParts = sentence.substring(0, sentence.indexOf(quoteMatches[0])).trim().split(/\s+/);
       const speaker = nameParts.length > 0 && nameParts[nameParts.length - 1].match(/^[A-Z][a-z]+/) 
         ? nameParts[nameParts.length - 1] 
@@ -215,7 +222,6 @@ export function parseDictation(text) {
     let action = sentence;
     if (quoteMatches) {
       action = sentence.replace(quoteMatches[0], "").trim();
-      // Remove trailing verbs like "says" or "shouts"
       action = action.replace(/\s+(says|shouts|whispers|replies|cries)\s*$/, "").trim();
     }
 

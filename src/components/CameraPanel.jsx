@@ -4,7 +4,9 @@ import { Camera, Video, Grid, Sliders, Crop } from 'lucide-react';
 const VIDEO_SOURCES = {
   neon: '/neon.mp4',
   beach: '/beach.mp4',
-  kitchen: '/kitchen.mp4'
+  kitchen: '/kitchen.mp4',
+  test: '/test.mp4',
+  temple: '/netlify.mp4'
 };
 
 export default function CameraPanel({ activeShot, onCaptureFrame }) {
@@ -192,7 +194,7 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
         {/* Toggle Preset Inputs */}
         <div className="flex-row items-center justify-between gap-2">
           <span className="label-dim text-xs font-semibold">VIEWFINDER POV</span>
-          <div className="button-group flex-row gap-1">
+          <div className="button-group flex-row gap-1 flex-wrap">
             <button 
               className={`btn-sm btn-hud ${povPreset === 'neon' ? 'active' : ''}`}
               onClick={() => setPovPreset('neon')}
@@ -210,6 +212,18 @@ export default function CameraPanel({ activeShot, onCaptureFrame }) {
               onClick={() => setPovPreset('kitchen')}
             >
               Corgi Dog
+            </button>
+            <button 
+              className={`btn-sm btn-hud ${povPreset === 'test' ? 'active' : ''}`}
+              onClick={() => setPovPreset('test')}
+            >
+              Color Bars
+            </button>
+            <button 
+              className={`btn-sm btn-hud ${povPreset === 'temple' ? 'active' : ''}`}
+              onClick={() => setPovPreset('temple')}
+            >
+              Historic Temple
             </button>
           </div>
         </div>
